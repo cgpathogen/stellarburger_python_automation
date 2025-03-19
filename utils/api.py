@@ -1,5 +1,7 @@
 from utils.http_methods import Http_methods
-
+from faker import Faker
+import random
+from string import ascii_letters,hexdigits,punctuation
 
 class Stellarburger_api_tests:
 
@@ -15,3 +17,26 @@ class Stellarburger_api_tests:
     user_data = "/api/auth/user"
     all_orders = "/api/orders/all"
     user_orders = "/api/orders"
+
+
+    @staticmethod
+    def test_create_user():
+        """
+        create an account for user by using generating random data with faker and random
+        """
+        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        fake = Faker()
+
+        email = f"{fake.first_name()}@gmail.com"
+        username = fake.first_name()
+        password = ""
+        for i in range(10):
+            password += random.choice(ascii_letters + hexdigits + punctuation)
+
+        create_user_json = {
+            "email": f"{email}",
+            "password": f"{password}",
+            "name": f"{username}"
+            }
+
+        request = Http_methods.post(used_url,create_user_json)
