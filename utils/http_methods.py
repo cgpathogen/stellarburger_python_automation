@@ -2,7 +2,10 @@ import requests
 
 
 class Http_methods:
-    headers = {"Content-Type": "application/json"}
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "PostmanRuntime/7.43.2",
+    }
     cookies = ""
 
     @staticmethod
@@ -10,9 +13,10 @@ class Http_methods:
         request = requests.get(url=url, headers=Http_methods.headers, cookies=Http_methods.cookies)
         return request
 
+
     @staticmethod
     def post(url, json):
-        request = requests.post(url=url, headers=Http_methods.headers, cookies=Http_methods.cookies, json=json)
+        request = requests.post(url=url, json=json, headers=Http_methods.headers, cookies=Http_methods.cookies)
         return request
 
 
