@@ -1,3 +1,4 @@
+import pytest
 from utils.http_methods import Http_methods
 from faker import Faker
 import random
@@ -17,6 +18,23 @@ class Stellarburger_api_tests:
     user_data = "/api/auth/user"
     all_orders = "/api/orders/all"
     user_orders = "/api/orders"
+
+
+    @staticmethod
+    def test_send_empty_request():
+        """
+        sending an empty request, expected status code 403
+        """
+        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        base_json = {
+            "email": "",
+            "password": "",
+            "name": ""
+            }
+        request = Http_methods.post(used_url,base_json)
+        assert request.status_code == 403
+        assert request.json()['success'] == False
+        assert request.json()['message'] == "Email, password and name are required fields"
 
 
     @staticmethod
