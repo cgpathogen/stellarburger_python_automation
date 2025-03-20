@@ -96,27 +96,77 @@ class Test_user:
         Test_user.save_name(request.json()['user']['name'])
         Test_user.save_email(request.json()['user']['email'])
         Test_user.save_password(password)
-        return request.json()['accessToken'], request.json()['refreshToken']
+        Test_user.save_bearer_token(request.json()['accessToken'])
+        Test_user.save_refresh_token(request.json()['refreshToken'])
 
 
+    # save/read user data into .txt methods
 
-
-    @staticmethod
+    @staticmethod       # write
     def save_email(user_email):
         with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "w") as file:
             file.write(user_email)
-        return user_email
+            return user_email
 
 
-    @staticmethod
+    @staticmethod       # read
+    def read_email(user_email):
+        with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "r") as file:
+            f = file.read(user_email)
+            return f
+
+
+    @staticmethod       # write
     def save_name(username):
         with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "w") as file:
             file.write(username)
-        return username
+            return username
 
 
-    @staticmethod
+    @staticmethod       # read
+    def read_name(username):
+        with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "r") as file:
+            f = file.read(username)
+            return f
+
+
+    @staticmethod       # write
     def save_password(user_password):
         with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "w") as file:
             file.write(user_password)
-        return user_password
+            return user_password
+
+
+    @staticmethod       # read
+    def read_password(user_password):
+        with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "r") as file:
+            f = file.read(user_password)
+            return f
+
+
+    @staticmethod       # write
+    def save_bearer_token(bearer):
+        with open(f"{os.getcwd()}/api/txt/user/bearer_token.txt", "w") as file:
+            file.write(bearer)
+            return bearer
+
+
+    @staticmethod       # read
+    def read_bearer_token(bearer):
+        with open(f"{os.getcwd()}/api/txt/user/bearer_token.txt", "r") as file:
+            f = file.read(bearer)
+            return f
+
+
+    @staticmethod       # write
+    def save_refresh_token(refresh_token):
+        with open(f"{os.getcwd()}/api/txt/user/refresh_token.txt", "w") as file:
+            file.write(refresh_token)
+            return refresh_token
+
+
+    @staticmethod       # read
+    def read_refresh_token(refresh_token):
+        with open(f"{os.getcwd()}/api/txt/user/refresh_token.txt", "r") as file:
+            f = file.read(refresh_token)
+            return f
