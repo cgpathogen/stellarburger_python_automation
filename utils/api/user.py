@@ -1,10 +1,11 @@
-import pytest
+import os
+
 from utils.http_methods import Http_methods
 from faker import Faker
 import random
 from string import ascii_letters,hexdigits,punctuation
 
-class Stellarburger_api_tests:
+class Test_user:
 
     base_url = "https://stellarburgers.nomoreparties.site"
     ingredients_data = "/api/ingredients"
@@ -25,7 +26,7 @@ class Stellarburger_api_tests:
         """
         sending an empty request, expected status code 403
         """
-        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        used_url = Test_user.base_url + Test_user.create_user
         base_json = {
             "email": "",
             "password": "",
@@ -43,7 +44,7 @@ class Stellarburger_api_tests:
         """
         create an account for user by using generating random data with faker and random
         """
-        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        used_url = Test_user.base_url + Test_user.create_user
         fake = Faker()
 
         email = f"{fake.first_name()}@gmail.com"
@@ -70,7 +71,7 @@ class Stellarburger_api_tests:
         """
         create an account for user by using generating random data with faker and random
         """
-        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        used_url = Test_user.base_url + Test_user.create_user
         fake = Faker()
 
         email = f"{fake.first_name()}@gmail.com"
@@ -86,8 +87,36 @@ class Stellarburger_api_tests:
             }
 
         request = Http_methods.post(used_url,create_user_json)
+        print(request.text)
         assert request.status_code == 200
         assert request.json()['success'] == True
         assert email.lower() == request.json()['user']['email']
         assert username == request.json()['user']['name']
-        return f"accessToken - {request.json()['accessToken']}" f"refreshToken - {request.json()['refreshToken']}"
+        print("Successful user creation, all fields match")
+        Test_user.save_name(request.json()['user']['name'])
+        Test_user.save_email(request.json()['user']['email'])
+        Test_user.save_password(password)
+        return request.json()['accessToken'], request.json()['refreshToken']
+
+
+
+
+    @staticmethod
+    def save_email(user_email):
+        with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "w") as file:
+            file.write(user_email)
+        return user_email
+
+
+    @staticmethod
+    def save_name(username):
+        with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "w") as file:
+            file.write(username)
+        return username
+
+
+    @staticmethod
+    def save_password(user_password):
+        with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "w") as file:
+            file.write(user_password)
+        return user_password
