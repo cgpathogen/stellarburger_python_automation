@@ -35,6 +35,34 @@ class Stellarburger_api_tests:
         assert request.status_code == 403
         assert request.json()['success'] == False
         assert request.json()['message'] == "Email, password and name are required fields"
+        print("Success, it's impossible to send an empty request, test passed")
+
+
+    @staticmethod
+    def test_send_half_request():
+        """
+        create an account for user by using generating random data with faker and random
+        """
+        used_url = Stellarburger_api_tests.base_url+Stellarburger_api_tests.create_user
+        fake = Faker()
+
+        email = f"{fake.first_name()}@gmail.com"
+        username = fake.first_name()
+        password = ""
+        for i in range(10):
+            password += random.choice(ascii_letters + hexdigits + punctuation)
+
+        create_user_json = {
+            "email": f"{email}",
+            "password": "",
+            "name": f"{username}"
+            }
+
+        request = Http_methods.post(used_url,create_user_json)
+        assert request.status_code == 403
+        assert request.json()['success'] == False
+        assert request.json()['message'] == "Email, password and name are required fields"
+        print("Success, it's impossible to send an half-empty request, test passed")
 
 
     @staticmethod
@@ -58,3 +86,8 @@ class Stellarburger_api_tests:
             }
 
         request = Http_methods.post(used_url,create_user_json)
+        assert request.status_code == 200
+        assert request.json()['success'] == True
+        assert email.lower() == request.json()['user']['email']
+        assert username == request.json()['user']['name']
+        return f"accessToken - {request.json()['accessToken']}" f"refreshToken - {request.json()['refreshToken']}"
