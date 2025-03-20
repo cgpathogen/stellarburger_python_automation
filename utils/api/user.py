@@ -96,9 +96,24 @@ class Test_user:
         Test_user.save_name(request.json()['user']['name'])
         Test_user.save_email(request.json()['user']['email'])
         Test_user.save_password(password)
+
+
+
+    @staticmethod
+    def test_authorization():
+        used_url = Test_user.base_url+Test_user.auth
+        auth_user_json = {
+            "email": f"{Test_user.read_email()}",
+            "password": f"{Test_user.read_password()}",
+            "name": f"{Test_user.read_name()}"
+            }
+        request = Http_methods.post(used_url,auth_user_json)
         Test_user.save_bearer_token(request.json()['accessToken'])
         Test_user.save_refresh_token(request.json()['refreshToken'])
-
+        assert request.status_code == 200
+        assert request.json()['user']['name'] == Test_user.read_name()
+        assert request.json()['user']['email'] == Test_user.read_email()
+        print("Successful authorization")
 
     # save/read user data into .txt methods
 
@@ -110,9 +125,9 @@ class Test_user:
 
 
     @staticmethod       # read
-    def read_email(user_email):
+    def read_email():
         with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "r") as file:
-            f = file.read(user_email)
+            f = file.read()
             return f
 
 
@@ -124,9 +139,9 @@ class Test_user:
 
 
     @staticmethod       # read
-    def read_name(username):
+    def read_name():
         with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "r") as file:
-            f = file.read(username)
+            f = file.read()
             return f
 
 
@@ -138,9 +153,9 @@ class Test_user:
 
 
     @staticmethod       # read
-    def read_password(user_password):
+    def read_password():
         with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "r") as file:
-            f = file.read(user_password)
+            f = file.read()
             return f
 
 
@@ -152,9 +167,9 @@ class Test_user:
 
 
     @staticmethod       # read
-    def read_bearer_token(bearer):
+    def read_bearer_token():
         with open(f"{os.getcwd()}/api/txt/user/bearer_token.txt", "r") as file:
-            f = file.read(bearer)
+            f = file.read()
             return f
 
 
@@ -166,7 +181,7 @@ class Test_user:
 
 
     @staticmethod       # read
-    def read_refresh_token(refresh_token):
+    def read_refresh_token():
         with open(f"{os.getcwd()}/api/txt/user/refresh_token.txt", "r") as file:
-            f = file.read(refresh_token)
+            f = file.read()
             return f
