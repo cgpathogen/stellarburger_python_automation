@@ -100,6 +100,21 @@ class Test_user:
 
 
     @staticmethod
+    def test_authorization_with_wrong_password():
+        used_url = Test_user.base_url+Test_user.auth
+        auth_user_json = {
+            "email": f"{Test_user.read_email()}",
+            "password": f"{Test_user.read_password()}+1",
+            "name": f"{Test_user.read_name()}"
+            }
+        request = Http_methods.post(used_url,auth_user_json)
+        assert request.status_code == 401
+        assert request.json()['success'] == False
+        assert request.json()['message'] == "email or password are incorrect"
+        print("Unauthorized with wrong password, test successfully passed")
+
+
+    @staticmethod
     def test_authorization():
         used_url = Test_user.base_url+Test_user.auth
         auth_user_json = {
@@ -115,7 +130,7 @@ class Test_user:
         assert request.json()['user']['email'] == Test_user.read_email()
         print("Successful authorization")
 
-    # save/read user data into .txt methods
+    # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
 
     @staticmethod       # write
     def save_email(user_email):
