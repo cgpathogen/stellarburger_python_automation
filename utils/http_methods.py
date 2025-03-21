@@ -30,6 +30,15 @@ class Http_methods:
 
 
     @staticmethod
+    def patch(url, json, token=None):
+        headers = Http_methods.headers.copy()
+        if token:
+            headers['Authorization'] = f"{token}"
+        request = requests.patch(url=url, headers=headers, cookies=Http_methods.cookies, json=json)
+        return request
+
+
+    @staticmethod
     def delete(url, json):
         request = requests.delete(url=url, headers=Http_methods.headers, cookies=Http_methods.cookies, json=json)
         return request
