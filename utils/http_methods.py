@@ -9,8 +9,11 @@ class Http_methods:
     cookies = ""
 
     @staticmethod
-    def get(url):
-        request = requests.get(url=url, headers=Http_methods.headers, cookies=Http_methods.cookies)
+    def get(url, token=None):
+        headers = Http_methods.headers.copy()
+        if token:
+            headers['Authorization'] = f"{token}"
+        request = requests.get(url=url, headers=headers, cookies=Http_methods.cookies)
         return request
 
 
