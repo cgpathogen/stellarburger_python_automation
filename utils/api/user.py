@@ -1,5 +1,7 @@
 import os
 
+import requests
+
 from utils.http_methods import Http_methods
 from faker import Faker
 import random
@@ -143,6 +145,22 @@ class Test_user:
         request = Http_methods.get(used_url, Test_user.read_bearer_token())
         print(f"User - data - {request.json()}")
         print(request.status_code)
+
+
+    @staticmethod
+    def test_update_user_info():
+        used_url = Test_user.base_url+Test_user.user_data
+        user_json = {
+            "email": f"{Test_user.read_email()}",
+            "password": f"{Test_user.read_password()}",
+            "name": f"{Test_user.read_name()}_updated"
+            }
+        request = Http_methods.patch(used_url,user_json, Test_user.read_bearer_token())
+        assert request.status_code == 200
+        print(request.json())
+        print("User info succesfully updated")
+
+
 
     # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
 
