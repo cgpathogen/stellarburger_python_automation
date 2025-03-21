@@ -143,8 +143,8 @@ class TestUser:
     def test_get_info_about_user():
         used_url = TestUser.base_url + TestUser.user_data
         request = Http_methods.get(used_url, TestUser.read_bearer_token())
-        print(f"User - data - {request.json()}")
-        print(request.status_code)
+        print(f"Authorized user email - {request.json()['user']['email']}, username - {request.json()['user']['name']}")
+        assert request.status_code == 200
 
 
     @staticmethod
@@ -157,8 +157,7 @@ class TestUser:
             }
         request = Http_methods.patch(used_url, user_json, TestUser.read_bearer_token())
         assert request.status_code == 200
-        print(request.json())
-        print("User info succesfully updated")
+        print(f"User info succesfully updated - username now is {request.json()['user']['name']}")
 
 
     @staticmethod
