@@ -101,6 +101,9 @@ class Test_user:
 
     @staticmethod
     def test_authorization_with_wrong_password():
+        """
+        authorization with wrong password
+        """
         used_url = Test_user.base_url+Test_user.auth
         auth_user_json = {
             "email": f"{Test_user.read_email()}",
@@ -116,6 +119,9 @@ class Test_user:
 
     @staticmethod
     def test_authorization():
+        """
+        authorization with correct user data
+        """
         used_url = Test_user.base_url+Test_user.auth
         auth_user_json = {
             "email": f"{Test_user.read_email()}",
@@ -129,6 +135,14 @@ class Test_user:
         assert request.json()['user']['name'] == Test_user.read_name()
         assert request.json()['user']['email'] == Test_user.read_email()
         print("Successful authorization")
+
+
+    @staticmethod
+    def test_get_info_about_user():
+        used_url = Test_user.base_url+Test_user.user_data
+        request = Http_methods.get(used_url, Test_user.read_bearer_token())
+        print(f"User - data - {request.json()}")
+        print(request.status_code)
 
     # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
 
