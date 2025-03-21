@@ -161,6 +161,19 @@ class Test_user:
         print("User info succesfully updated")
 
 
+    @staticmethod
+    def test_delete_user():
+        used_url = Test_user.base_url+Test_user.user_data
+        user_json = {
+            "email": f"{Test_user.read_email()}",
+            "name": f"{Test_user.read_name()}"
+            }
+        request = Http_methods.delete(used_url, user_json, Test_user.read_bearer_token())
+        assert request.status_code == 202
+        assert request.json()['success'] == True
+        assert request.json()['message'] == "User successfully removed"
+        print("User successfully removed")
+
 
     # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
 
