@@ -7,7 +7,7 @@ from faker import Faker
 import random
 from string import ascii_letters,hexdigits,punctuation
 
-class Test_user:
+class TestUser:
 
     base_url = "https://stellarburgers.nomoreparties.site"
     ingredients_data = "/api/ingredients"
@@ -28,7 +28,7 @@ class Test_user:
         """
         sending an empty request, expected status code 403
         """
-        used_url = Test_user.base_url + Test_user.create_user
+        used_url = TestUser.base_url + TestUser.create_user
         base_json = {
             "email": "",
             "password": "",
@@ -46,7 +46,7 @@ class Test_user:
         """
         create an account for user by using generating random data with faker and random
         """
-        used_url = Test_user.base_url + Test_user.create_user
+        used_url = TestUser.base_url + TestUser.create_user
         fake = Faker()
 
         email = f"{fake.first_name()}@gmail.com"
@@ -73,7 +73,7 @@ class Test_user:
         """
         create an account for user by using generating random data with faker and random
         """
-        used_url = Test_user.base_url + Test_user.create_user
+        used_url = TestUser.base_url + TestUser.create_user
         fake = Faker()
 
         email = f"{fake.first_name()}@gmail.com"
@@ -95,9 +95,9 @@ class Test_user:
         assert email.lower() == request.json()['user']['email']
         assert username == request.json()['user']['name']
         print("Successful user creation, all fields match")
-        Test_user.save_name(request.json()['user']['name'])
-        Test_user.save_email(request.json()['user']['email'])
-        Test_user.save_password(password)
+        TestUser.save_name(request.json()['user']['name'])
+        TestUser.save_email(request.json()['user']['email'])
+        TestUser.save_password(password)
 
 
 
@@ -106,11 +106,11 @@ class Test_user:
         """
         authorization with wrong password
         """
-        used_url = Test_user.base_url+Test_user.auth
+        used_url = TestUser.base_url + TestUser.auth
         auth_user_json = {
-            "email": f"{Test_user.read_email()}",
-            "password": f"{Test_user.read_password()}+1",
-            "name": f"{Test_user.read_name()}"
+            "email": f"{TestUser.read_email()}",
+            "password": f"{TestUser.read_password()}+1",
+            "name": f"{TestUser.read_name()}"
             }
         request = Http_methods.post(used_url,auth_user_json)
         assert request.status_code == 401
@@ -124,38 +124,38 @@ class Test_user:
         """
         authorization with correct user data
         """
-        used_url = Test_user.base_url+Test_user.auth
+        used_url = TestUser.base_url + TestUser.auth
         auth_user_json = {
-            "email": f"{Test_user.read_email()}",
-            "password": f"{Test_user.read_password()}",
-            "name": f"{Test_user.read_name()}"
+            "email": f"{TestUser.read_email()}",
+            "password": f"{TestUser.read_password()}",
+            "name": f"{TestUser.read_name()}"
             }
         request = Http_methods.post(used_url,auth_user_json)
-        Test_user.save_bearer_token(request.json()['accessToken'])
-        Test_user.save_refresh_token(request.json()['refreshToken'])
+        TestUser.save_bearer_token(request.json()['accessToken'])
+        TestUser.save_refresh_token(request.json()['refreshToken'])
         assert request.status_code == 200
-        assert request.json()['user']['name'] == Test_user.read_name()
-        assert request.json()['user']['email'] == Test_user.read_email()
+        assert request.json()['user']['name'] == TestUser.read_name()
+        assert request.json()['user']['email'] == TestUser.read_email()
         print("Successful authorization")
 
 
     @staticmethod
     def test_get_info_about_user():
-        used_url = Test_user.base_url+Test_user.user_data
-        request = Http_methods.get(used_url, Test_user.read_bearer_token())
+        used_url = TestUser.base_url + TestUser.user_data
+        request = Http_methods.get(used_url, TestUser.read_bearer_token())
         print(f"User - data - {request.json()}")
         print(request.status_code)
 
 
     @staticmethod
     def test_update_user_info():
-        used_url = Test_user.base_url+Test_user.user_data
+        used_url = TestUser.base_url + TestUser.user_data
         user_json = {
-            "email": f"{Test_user.read_email()}",
-            "password": f"{Test_user.read_password()}",
-            "name": f"{Test_user.read_name()}_updated"
+            "email": f"{TestUser.read_email()}",
+            "password": f"{TestUser.read_password()}",
+            "name": f"{TestUser.read_name()}_updated"
             }
-        request = Http_methods.patch(used_url,user_json, Test_user.read_bearer_token())
+        request = Http_methods.patch(used_url, user_json, TestUser.read_bearer_token())
         assert request.status_code == 200
         print(request.json())
         print("User info succesfully updated")
@@ -163,12 +163,12 @@ class Test_user:
 
     @staticmethod
     def test_delete_user():
-        used_url = Test_user.base_url+Test_user.user_data
+        used_url = TestUser.base_url + TestUser.user_data
         user_json = {
-            "email": f"{Test_user.read_email()}",
-            "name": f"{Test_user.read_name()}"
+            "email": f"{TestUser.read_email()}",
+            "name": f"{TestUser.read_name()}"
             }
-        request = Http_methods.delete(used_url, user_json, Test_user.read_bearer_token())
+        request = Http_methods.delete(used_url, user_json, TestUser.read_bearer_token())
         assert request.status_code == 202
         assert request.json()['success'] == True
         assert request.json()['message'] == "User successfully removed"
@@ -179,69 +179,69 @@ class Test_user:
 
     @staticmethod       # write
     def save_email(user_email):
-        with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "w") as file:
+        with open(f"{os.getcwd()}/txt/user/user_email.txt", "w") as file:
             file.write(user_email)
             return user_email
 
 
     @staticmethod       # read
     def read_email():
-        with open(f"{os.getcwd()}/api/txt/user/user_email.txt", "r") as file:
+        with open(f"{os.getcwd()}/txt/user/user_email.txt", "r") as file:
             f = file.read()
             return f
 
 
     @staticmethod       # write
     def save_name(username):
-        with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "w") as file:
+        with open(f"{os.getcwd()}/txt/user/user_name.txt", "w") as file:
             file.write(username)
             return username
 
 
     @staticmethod       # read
     def read_name():
-        with open(f"{os.getcwd()}/api/txt/user/user_name.txt", "r") as file:
+        with open(f"{os.getcwd()}/txt/user/user_name.txt", "r") as file:
             f = file.read()
             return f
 
 
     @staticmethod       # write
     def save_password(user_password):
-        with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "w") as file:
+        with open(f"{os.getcwd()}/txt/user/user_password.txt", "w") as file:
             file.write(user_password)
             return user_password
 
 
     @staticmethod       # read
     def read_password():
-        with open(f"{os.getcwd()}/api/txt/user/user_password.txt", "r") as file:
+        with open(f"{os.getcwd()}/txt/user/user_password.txt", "r") as file:
             f = file.read()
             return f
 
 
     @staticmethod       # write
     def save_bearer_token(bearer):
-        with open(f"{os.getcwd()}/api/txt/user/bearer_token.txt", "w") as file:
+        with open(f"{os.getcwd()}/txt/user/bearer_token.txt", "w") as file:
             file.write(bearer)
             return bearer
 
 
     @staticmethod       # read
     def read_bearer_token():
-        with open(f"{os.getcwd()}/api/txt/user/bearer_token.txt", "r") as file:
+        with open(f"{os.getcwd()}/txt/user/bearer_token.txt", "r") as file:
             f = file.read()
             return f
 
 
     @staticmethod       # write
     def save_refresh_token(refresh_token):
-        with open(f"{os.getcwd()}/api/txt/user/refresh_token.txt", "w") as file:
+        with open(f"{os.getcwd()}/txt/user/refresh_token.txt", "w") as file:
             file.write(refresh_token)
             return refresh_token
 
 
     @staticmethod       # read
     def read_refresh_token():
-        with open(f"{os.getcwd()}/api/txt/user/refresh_token.txt", "r") as file:
+        with open(f"{os.getcwd()}/txt/user/refresh_token.txt", "r") as file:
             f = file.read()
             return f
