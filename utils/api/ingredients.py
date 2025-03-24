@@ -1,8 +1,6 @@
 import random
-
-import requests
-
 from utils.http_methods import Http_methods
+from utils.api.user import TestUser
 
 class TestIngredients:
     #urls
@@ -26,19 +24,31 @@ class TestIngredients:
         for item in request.json()['data']:
             TestIngredients.ingredients_list.append(item["_id"]) #collect all ids to list for further using
         print("Ingredients list received, ids were saved")
+        print(TestIngredients.ingredients_list)
 
 
     @staticmethod
     def test_get_unauthorized_user_orders():
         """
-        test of attempt to get list of orders without passing authorization, expected status code - 401
+        test of attempt to get list of orders
         """
         used_url = TestIngredients.base_url + TestIngredients.order
         request = Http_methods.get(used_url)
         print(request.json())
         assert request.status_code == 401
-        print("Success, couldn't get set of orders without authorization")
+        print("Success - couldn't get user's order list, authorization required")
 
+
+    @staticmethod
+    def test_get_authorized_user_orders():
+        """
+        test of attempt to get list of orders
+        """
+        used_url = TestIngredients.base_url + TestIngredients.order
+        request = Http_methods.get(used_url, TestUser.read_bearer_token())
+        print(request.json())
+        assert request.status_code == 200
+        print(f"Success - user's list of orders - {request.json()}")
 
 
     @staticmethod
@@ -57,16 +67,16 @@ class TestIngredients:
 
 
     @staticmethod
-    def place_order():
+    def test_place_order():
         """
         test placing order by authorized user
         """
         global json, ids_list
         used_url = TestIngredients.base_url + TestIngredients.order
-        for n in range(3):
-            ids_list = []
-            ids_list.append(random.choice(ids_list))
+        ids_list = random.sample(TestIngredients.ingredients_list,3)
         json = {
             "ingredients": [*ids_list]
         }
         request = Http_methods.post(used_url,json)
+        print(request.json())
+        assert request.status_code == 200
