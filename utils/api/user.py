@@ -1,7 +1,5 @@
 import os
 
-import requests
-
 from utils.http_methods import Http_methods
 from faker import Faker
 import random
@@ -197,7 +195,6 @@ class TestUser:
         request = Http_methods.post(used_url, logout_json, TestUser.read_refresh_token())
         assert request.status_code == 200
         print("Successful logout")
-
 
 
     # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
