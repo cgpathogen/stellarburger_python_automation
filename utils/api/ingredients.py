@@ -24,7 +24,6 @@ class TestIngredients:
         for item in request.json()['data']:
             TestIngredients.ingredients_list.append(item["_id"]) #collect all ids to list for further using
         print("Ingredients list received, ids were saved")
-        print(TestIngredients.ingredients_list)
 
 
     @staticmethod
@@ -46,9 +45,8 @@ class TestIngredients:
         """
         used_url = TestIngredients.base_url + TestIngredients.order
         request = Http_methods.get(used_url, TestUser.read_bearer_token())
-        print(request.json())
         assert request.status_code == 200
-        print(f"Success - user's list of orders - {request.json()}")
+        print(f"Success - user's list of orders - {request.json()['orders']}")
 
 
     @staticmethod
@@ -78,5 +76,5 @@ class TestIngredients:
             "ingredients": [*ids_list]
         }
         request = Http_methods.post(used_url,json)
-        print(request.json())
+        print(f"Order - {request.json()['name']}")
         assert request.status_code == 200
