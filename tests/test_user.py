@@ -2,10 +2,15 @@ from utils.api.user import TestUser
 
 class TestUserMethods:
 
-    def test_user_lifecycle(self):
-
+    def test_sending_empty_request(self):
         TestUser.test_send_empty_request()
+
+
+    def test_sending_half_request(self):
         TestUser.test_send_half_request()
+
+
+    def test_user_lifecycle(self):
         TestUser.test_create_user()
         TestUser.test_authorization_with_wrong_password()
         TestUser.test_authorization()
