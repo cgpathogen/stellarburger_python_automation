@@ -144,7 +144,7 @@ class TestUser:
             "password": f"{TestUser.read_password()}",
             "name": f"{TestUser.read_name()}"
             }
-        request = Http_methods.post(used_url,auth_user_json)
+        request = Http_methods.post(used_url, auth_user_json, TestUser.read_refresh_token())
         TestUser.save_bearer_token(request.json()['accessToken'])
         TestUser.save_refresh_token(request.json()['refreshToken'])
         assert request.status_code == 200
@@ -192,7 +192,7 @@ class TestUser:
     def test_logout():
         used_url = TestUser.base_url+TestUser.logout
         logout_json = {
-            TestUser.read_refresh_token()
+            "token": TestUser.read_refresh_token()
         }
         request = Http_methods.post(used_url, logout_json, TestUser.read_refresh_token())
         assert request.status_code == 200
