@@ -15,5 +15,6 @@ class TestOrders:
         TestUser.test_create_user()
         TestUser.test_authorization()
         TestIngredients.test_get_all_ingredients()
-        TestIngredients.test_place_order()
+        TestIngredients.test_place_order() # create first burger
+        TestIngredients.test_place_order() # create another burger
         TestIngredients.test_get_authorized_user_orders()
