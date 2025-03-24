@@ -188,6 +188,18 @@ class TestUser:
         print("User successfully removed")
 
 
+    @staticmethod
+    def test_logout():
+        used_url = TestUser.base_url+TestUser.logout
+        logout_json = {
+            TestUser.read_refresh_token()
+        }
+        request = Http_methods.post(used_url, logout_json, TestUser.read_refresh_token())
+        assert request.status_code == 200
+        print("Successful logout")
+
+
+
     # SAVE/READ USER DATA INTO .TXT METHODS <========================================================================
 
     @staticmethod       # write
