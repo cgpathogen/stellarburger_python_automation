@@ -14,6 +14,6 @@ class TestUserMethods:
         TestUser.test_delete_user()
 
 
-
-test = TestUserMethods()
-test.test_user_lifecycle()
+    def test_create_existing_user(self):
+        TestUser.test_create_user()
+        TestUser.test_creating_of_existing_user()
