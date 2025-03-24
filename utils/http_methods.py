@@ -18,8 +18,11 @@ class Http_methods:
 
 
     @staticmethod
-    def post(url, json):
-        request = requests.post(url=url, json=json, headers=Http_methods.headers, cookies=Http_methods.cookies)
+    def post(url, json, token=None):
+        headers = Http_methods.headers.copy()
+        if token:
+            headers['Authorization'] = f"{token}"
+        request = requests.post(url=url, json=json, headers=headers, cookies=Http_methods.cookies)
         return request
 
 
