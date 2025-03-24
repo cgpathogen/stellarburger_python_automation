@@ -1,8 +1,9 @@
 from utils.api.user import TestUser
 
-class TestUserLifecycle:
+class TestUserMethods:
 
     def test_user_lifecycle(self):
+
         TestUser.test_send_empty_request()
         TestUser.test_send_half_request()
         TestUser.test_create_user()
@@ -13,5 +14,6 @@ class TestUserLifecycle:
         TestUser.test_delete_user()
 
 
-test = TestUserLifecycle()
+
+test = TestUserMethods()
 test.test_user_lifecycle()
