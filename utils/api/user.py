@@ -99,6 +99,21 @@ class TestUser:
         TestUser.save_password(password)
 
 
+    @staticmethod
+    def test_creating_of_existing_user():
+        """
+        test of attempt to create an existing user
+        """
+        used_url = TestUser.base_url + TestUser.create_user
+        create_user_json = {
+            "email": f"{TestUser.read_email()}",
+            "password": f"{TestUser.read_password()}",
+            "name": f"{TestUser.read_name()}"
+            }
+        request = Http_methods.post(used_url, create_user_json)
+        assert request.status_code == 403
+        print("Success, couldn't create a user with existing user data")
+
 
     @staticmethod
     def test_authorization_with_wrong_password():
