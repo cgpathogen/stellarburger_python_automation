@@ -89,7 +89,6 @@ class TestUser:
             }
 
         request = Http_methods.post(used_url,create_user_json)
-        print(request.text)
         assert request.status_code == 200
         assert request.json()['success'] == True
         assert email.lower() == request.json()['user']['email']
