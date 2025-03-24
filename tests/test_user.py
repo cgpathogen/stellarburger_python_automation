@@ -24,7 +24,7 @@ class TestUserMethods:
         TestUser.test_creating_of_existing_user()
 
 
-    def test_reauthorization(self):
+    def test_login_after_logout(self):
         TestUser.test_create_user()
         TestUser.test_authorization()
         TestUser.test_logout()
