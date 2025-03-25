@@ -87,7 +87,7 @@ class TestUser:
         used_url = TestUser.base_url + TestUser.create_user
         fake = Faker()
 
-        email = f"{fake.first_name()}@gmail.com"
+        email = f"{fake.user_name()}@gmail.com"
         username = fake.first_name()
         password = ""
         for i in range(10):
