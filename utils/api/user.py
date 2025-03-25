@@ -58,7 +58,7 @@ class TestUser:
         create an account for user by using generating random data with faker and random
         """
         used_url = TestUser.base_url + TestUser.create_user
-        fake = Faker()
+        fake = Faker("en_US")
 
         email = f"{fake.first_name()}@gmail.com"
         username = fake.first_name()
