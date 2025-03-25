@@ -3,11 +3,6 @@ from utils.api.ingredients import TestIngredients
 
 class TestOrders:
 
-
-    def test_clear_txt(self):
-        TestUser.test_clear_user_data()
-
-
     def test_get_orders_without_authorization(self):
         TestIngredients.test_get_unauthorized_user_orders()
 
@@ -17,6 +12,7 @@ class TestOrders:
 
 
     def test_create_order(self):
+        TestUser.test_clear_user_data()
         TestUser.test_create_user()
         TestUser.test_authorization()
         TestIngredients.test_get_all_ingredients()
