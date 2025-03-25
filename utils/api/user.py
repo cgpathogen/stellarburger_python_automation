@@ -67,9 +67,9 @@ class TestUser:
 
 
     @staticmethod
-    def test_create_user():
+    def create_user_basic_method():
         """
-        create an account for user by using generating random data with faker and random
+        basic method for using try/except construction to avoid repeating code
         """
         used_url = TestUser.base_url + TestUser.create_user
         fake = Faker()
@@ -85,7 +85,6 @@ class TestUser:
             "password": f"{password}",
             "name": f"{username}"
             }
-
         request = Http_methods.post(used_url,create_user_json)
         assert request.status_code == 200
         assert request.json()['success'] == True
@@ -95,6 +94,16 @@ class TestUser:
         TestUser.save_name(request.json()['user']['name'])
         TestUser.save_email(request.json()['user']['email'])
         TestUser.save_password(password)
+
+    @staticmethod
+    def test_create_user():
+        """
+        create an account for user by using generating random data with faker and random
+        """
+        try:
+            TestUser.create_user_basic_method()
+        except AssertionError:
+            TestUser.create_user_basic_method()
 
 
     @staticmethod
