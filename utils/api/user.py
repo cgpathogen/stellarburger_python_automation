@@ -20,6 +20,19 @@ class TestUser:
     all_orders = "/api/orders/all"
     user_orders = "/api/orders"
 
+    @staticmethod
+    def test_clear_user_data():
+        files = [
+            f"{os.getcwd()}/txt/user/user_email.txt",
+            f"{os.getcwd()}/txt/user/user_name.txt",
+            f"{os.getcwd()}/txt/user/user_password.txt",
+            f"{os.getcwd()}/txt/user/bearer_token.txt",
+            f"{os.getcwd()}/txt/user/refresh_token.txt"
+        ]
+        for file in files:
+            if os.path.exists(file):
+                os.remove(file)
+
 
     @staticmethod
     def test_send_empty_request():

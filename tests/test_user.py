@@ -2,6 +2,9 @@ from utils.api.user import TestUser
 
 class TestUserMethods:
 
+    def test_clear_txt(self):
+        TestUser.test_clear_user_data()
+
     def test_sending_empty_request(self):
         TestUser.test_send_empty_request()
 
